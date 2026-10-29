@@ -18,17 +18,10 @@ float _pairwise_hypo_distance(
         float lat2,
         float dep_km2
         ){
-    float av_lat = (lat1 + lat2) / 2.;
-    float deg2rad = PI / 180.;
-    float x1 = RADIUS_EARTH_KM * sin(lat1 * deg2rad) * sin(lon1 * deg2rad);
-    float y1 = RADIUS_EARTH_KM * sin(lat1 * deg2rad) * cos(lon1 * deg2rad);
-    float z1 = RADIUS_EARTH_KM * cos(lat1 * deg2rad);
-    float x2 = RADIUS_EARTH_KM * sin(lat2 * deg2rad) * sin(lon2 * deg2rad);
-    float y2 = RADIUS_EARTH_KM * sin(lat2 * deg2rad) * cos(lon2 * deg2rad);
-    float z2 = RADIUS_EARTH_KM * cos(lat2 * deg2rad);
-    float hypo_distance = sqrt(
-            pow(x1 - x2, 2) + pow(y1 - y2, 2) + pow(z1 - z2, 2)
+    float epi_distance = _pairwise_epi_distance(
+            lon1, lat1, lon2, lat2
             );
+    float hypo_distance = sqrt(pow(epi_distance, 2) + pow(dep_km2 - dep_km1, 2));
 
     return hypo_distance;
 }
@@ -39,15 +32,11 @@ float _pairwise_epi_distance(
         float lon2,
         float lat2
         ){
-    float av_lat = (lat1 + lat2) / 2.;
     float deg2rad = PI / 180.;
-    float x1 = RADIUS_EARTH_KM * sin(lat1 * deg2rad) * sin(lon1 * deg2rad);
-    float y1 = RADIUS_EARTH_KM * sin(lat1 * deg2rad) * cos(lon1 * deg2rad);
-    float x2 = RADIUS_EARTH_KM * sin(lat2 * deg2rad) * sin(lon2 * deg2rad);
-    float y2 = RADIUS_EARTH_KM * sin(lat2 * deg2rad) * cos(lon2 * deg2rad);
-    float epi_distance = sqrt(
-            pow(x1 - x2, 2) + pow(y1 - y2, 2)
-            );
+    float av_lat = (lat1 + lat2) / 2. * deg2rad;
+    float dx = (lon2 - lon1) * deg2rad * cos(av_lat);
+    float dy = (lat2 - lat1) * deg2rad;
+    float epi_distance = RADIUS_EARTH_KM * sqrt(dx*dx + dy*dy);
 
     return epi_distance;
 }
@@ -103,20 +92,20 @@ void space_time_energy_nn(
             ie_time[j-i-1] *= conversion_from_sec;
             ie_time[j-i-1] *= rescaling_factor_d;
             // ----------- inter-event distance
-            //ie_distance[j-i-1] = _pairwise_hypo_distance(
-            //        longitude[i],
-            //        latitude[i],
-            //        depth[i],
-            //        longitude[j],
-            //        latitude[j],
-            //        depth[j]
-            //        );
-            ie_distance[j-i-1] = _pairwise_epi_distance(
+            ie_distance[j-i-1] = _pairwise_hypo_distance(
                     longitude[i],
                     latitude[i],
+                    depth_km[i],
                     longitude[j],
-                    latitude[j]
+                    latitude[j],
+                    depth_km[j]
                     );
+            //ie_distance[j-i-1] = _pairwise_epi_distance(
+            //        longitude[i],
+            //        latitude[i],
+            //        longitude[j],
+            //        latitude[j]
+            //        );
             ie_distance[j-i-1] *= conversion_from_km;
             ie_distance[j-i-1] = pow(
                     ie_distance[j-i-1], fractal_dimension
