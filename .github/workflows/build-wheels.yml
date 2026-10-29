@@ -26,8 +26,10 @@ jobs:
     - name: Build wheels
       uses: pypa/cibuildwheel@v2.22.0
       env:
+        # Build for CPython 3.10 and 3.12
+        CIBW_BUILD: "cp310-* cp312-*"
         # Skip alternative targets like musl linux
-        CIBW_SKIP: "cp38-* cp39-* *musllinux*"
+        CIBW_SKIP: "*musllinux*"
 
         # Target older macOS for broader user compatibility
         MACOSX_DEPLOYMENT_TARGET: "15.0"
