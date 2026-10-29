@@ -19,6 +19,7 @@ LIBRARIES = {
             ct.POINTER(ct.c_float),  # magnitude
             ct.c_size_t,  # num_events
             ct.c_double, # t_max_sec
+            ct.c_float, # b-value
             ct.c_float, # fractal dimension
             ct.c_double, # conversion_from_sec
             ct.c_float, # conversion_from_km

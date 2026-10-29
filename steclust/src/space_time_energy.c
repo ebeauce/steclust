@@ -41,7 +41,6 @@ float _pairwise_epi_distance(
     return epi_distance;
 }
 
-
 void space_time_energy_nn(
         double *origin_time_sec,
         float *longitude,
@@ -50,6 +49,7 @@ void space_time_energy_nn(
         float *magnitude,
         size_t num_events,
         double t_max_sec,
+        float bvalue,
         float fractal_dimension,
         double conversion_from_sec,
         float conversion_from_km,
@@ -70,7 +70,7 @@ void space_time_energy_nn(
         float _log_eta;
         size_t nn_eta_index = 0;
 
-        rescaling_factor = pow(10., -magnitude[i] / 2.);
+        rescaling_factor = pow(10., -bvalue * magnitude[i] / 2.);
         rescaling_factor_d = (double)rescaling_factor;
 
         if (i%counter_every_n == 0){

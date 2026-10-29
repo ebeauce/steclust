@@ -14,6 +14,7 @@ def space_time_energy_nn(
         fractal_dimension,
         conversion_from_sec,
         conversion_from_km,
+        bvalue=1.,
         num_threads=1,
         device="cpu"
         ):
@@ -24,6 +25,7 @@ def space_time_energy_nn(
     # cast to expected data type
     num_events = np.int32(len(longitude))
     t_max_sec= np.float64(t_max_sec)
+    bvalue = np.float32(bvalue)
     fractal_dimension = np.float32(fractal_dimension)
     conversion_from_sec = np.float64(conversion_from_sec)
     conversion_from_km = np.float32(conversion_from_km)
@@ -46,6 +48,7 @@ def space_time_energy_nn(
             magnitude.ctypes.data_as(ct.POINTER(ct.c_float)),
             num_events,
             t_max_sec,
+            bvalue,
             fractal_dimension,
             conversion_from_sec,
             conversion_from_km,
