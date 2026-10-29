@@ -1,0 +1,48 @@
+[build-system]
+requires = ["scikit-build-core>=0.8.0"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "steclust"
+dynamic = ["version"]
+description = "Package for beamforming/backprojection."
+readme = "README.md"
+license = { text = "GPL-3.0" }
+requires-python = ">=3.8"
+authors = [
+    { name = "Eric Beaucé", email = "ebeauce@ldeo.columbia.edu" },
+]
+maintainers = [
+    { name = "Eric Beaucé", email = "ebeauce@ldeo.columbia.edu" },
+]
+keywords = ["earthquake detection", "backprojection", "beamforming"]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+]
+dependencies = [
+    "numpy>=1.19.5",
+]
+
+[project.urls]
+GitHub = "https://github.com/ebeauce/steclust"
+Documentation = "https://ebeauce.github.io/steclust"
+Issues = "https://github.com/ebeauce/steclust/issues"
+
+[tool.scikit-build]
+# Forces a strict minimum CMake version
+cmake.version = ">=3.24"
+# Ensures your wheels get strict platform ABI tagging automatically
+wheel.py-api = "cp38" 
+# Authorize scikit-build-core to use third-party plugins
+experimental = true
+
+[tool.scikit-build.metadata.version]
+provider = "scikit_build_core.metadata.regex"
+input = "steclust/__init__.py"

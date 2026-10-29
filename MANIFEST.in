@@ -1,0 +1,20 @@
+# Manifest file for Python distribution
+# Include source files for reference
+include steclust/src/space_time_energy.c
+include steclust/src/space_time_energy_cpu.h
+
+# Include Python files
+include steclust/__init__.py
+include steclust/steclust.py
+include steclust/core.py
+
+# Include pre-built shared libraries (critical for distribution)
+recursive-include steclust/lib *.so
+recursive-include steclust/lib *.pyd
+recursive-include steclust/lib *.dylib
+
+# Include documentation and build files
+include LICENSE
+include Makefile
+include README.md
+include pyproject.toml
