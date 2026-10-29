@@ -27,10 +27,10 @@ jobs:
       uses: pypa/cibuildwheel@v2.22.0
       env:
         # Skip alternative targets like musl linux
-        CIBW_SKIP: "*musllinux*"
+        CIBW_SKIP: "cp38-* cp39-* *musllinux*"
 
         # Target older macOS for broader user compatibility
-        MACOSX_DEPLOYMENT_TARGET: "15.0"
+        MACOSX_DEPLOYMENT_TARGET: "11.0"
 
         # Linux configurations: Install OpenMP
         CIBW_BEFORE_ALL_LINUX: "yum install -y libgomp"
